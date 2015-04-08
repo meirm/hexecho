@@ -1,5 +1,7 @@
 /*
 ** hexecho.c
+** Author: Andreas Fink (andreas@fink.org)
+** Code in the public domain
 */
 
 #include <stdio.h>
