@@ -15,7 +15,8 @@ ${EXE}: ${OFILES}
 	${CC} ${CFLAGS} -o ${EXE} ${OFILES} ${LIBS}
 
 install: ${EXE}
-	-cp ${EXE} ${EXEDIR}
+	-mkdir -p -m 755 $(DESTDIR)/usr/local/bin
+	-install -b -g bin -o root -m 755 ${EXE} $(DESTDIR)${EXEDIR}/${EXE}
 	
 clean:
 	-rm -f *.o *.BAK *~ core ${EXE}
