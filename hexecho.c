@@ -23,7 +23,9 @@ int	main(int argc, char *argv[])
 		if(s[0]=='-')
 		{
 			if(s[1]=='r')
+            {
 				raw=1;
+            }
 			if((s[1]=='h') || (s[1]=='?'))
 			{
 				fprintf(stderr,"hexecho -r 01 02 03: produces raw binary output of hex bytes 01 02 03\n");
@@ -48,20 +50,29 @@ int	main(int argc, char *argv[])
 				d =  *s++;	
 				c = unhex(c,d);
 				if(raw)
+				{
 					putchar(c);
+				}
 				else
 				{
-				if(isprint(c))
-					printf("%c",c);
-				else
-					printf("\\x%02X",c);
+					if(isprint(c))
+					{
+						putchar(c);
+					}
+					else
+					{
+						printf("\\x%02X",c);
+					}
 				}
 			}
 			else
 				s++;
 		}
 	}
-	printf("\n");
+    if(raw==0)
+    {
+        printf("\n");
+    }
 	fflush(stdout);
 }
 
