@@ -49,7 +49,11 @@ int	main(int argc, char *argv[])
 			if(isxdigit(*s))
 			{
 				c = *s++;
-				d =  *s++;	
+				d =  *s++;
+				if (d == '\0') {
+					fprintf(stderr, "expected a hex pair but only got a single hex number\n");
+					abort();
+				}
 				c = unhex(c,d);
 				if(raw)
 				{
