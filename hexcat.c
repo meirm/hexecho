@@ -11,15 +11,11 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>
-
-     
-unsigned char	unhex(unsigned char hex1, unsigned char hex2);
-int	unnibble(unsigned char x);
-int cat_fd(int ifd);
-int raw = 0;
+#include "hexcat.h"     
 
 int	main(int argc, char *argv[])
 {
+    int raw = 0;
 	int	i;
 	unsigned char	*s;
 	int rfstdin = 1;
@@ -41,7 +37,7 @@ int	main(int argc, char *argv[])
 			}
 			if(s[1]=='v')
 			{
-				fprintf(stderr,"hexcat version 1.1. Copyright 2011 Andreas Fink (andreas@fink.org). Source on https://github.com/andreasfink/hexcat.git\n");
+				fprintf(stderr,"hexcat version 1.1. Copyright 2011 Andreas Fink (andreas@fink.org). Source on https://github.com/meirm/hexcat.git\n");
 				exit(0);
 				
 			}
@@ -49,7 +45,7 @@ int	main(int argc, char *argv[])
 		}else{
 			rfstdin = 0;
 			int fp= open(argv[i],O_RDONLY, 0);
-			if (cat_fd(fp) != 0)
+			if (cat_fd(fp, raw) != 0)
 		        	fprintf(stderr, "failed to copy standard input\n");
 			close(fp);
 		}
@@ -57,7 +53,7 @@ int	main(int argc, char *argv[])
 
 	}
 	if (rfstdin == 1){
-		if (cat_fd(0) != 0)
+		if (cat_fd(0, raw) != 0)
 		        fprintf(stderr, "failed to copy standard input\n");
 	}
     if(raw==0)
@@ -67,30 +63,7 @@ int	main(int argc, char *argv[])
 	fflush(stdout);
 }
 
-
-unsigned char	unhex(unsigned char hex1, unsigned char hex2)
-{
-    return ( unnibble(hex1)*16+unnibble(hex2) );
-}
-
-int	unnibble(unsigned char x)
-{
-    if((x>='0') && (x<='9'))
-    {
-		return (x-'0');
-    }
-    else if((x>='a') && (x<='f'))
-    {
-		return (x-'a'+10);
-    }
-    else if((x>='A') && (x<='F'))
-    {
-		return(x-'A'+10);
-	}
-    return -1;
-}
-
-int cat_fd(int ifd)
+int cat_fd(int ifd, int raw)
 {
     unsigned char c;
     unsigned char d;
